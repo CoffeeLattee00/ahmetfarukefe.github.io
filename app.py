@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, flash, url_for, jsonify
+from flask import Flask, render_template, request, redirect, flash, url_for, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from slugify import slugify
 import os
@@ -303,6 +303,24 @@ def delete_post(id):
     regenerate_json_files()
     flash('Yazı silindi.', 'info')
     return redirect(url_for('admin_dashboard'))
+
+# ----------------------------------------------------------------------
+# 5. Frontend Rotaları (Siteyi Ziyaret Edenler İçin)
+# ----------------------------------------------------------------------
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/assets/<path:path>')
+def send_assets(path):
+    return send_from_directory('assets', path)
+
+@app.route('/<path:filename>')
+def serve_static_html(filename):
+    # Bu kod, index.html dışındaki diğer html dosyalarını (projects.html vb.)
+    # templates klasöründen çağırmana yarar.
+    return render_template(filename)
 
 # ----------------------------------------------------------------------
 # Başlangıç
