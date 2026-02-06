@@ -4,14 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ahmet Faruk Efe - Mechanical Engineer & Visionary.">
-    <title>Ahmet Faruk Efe | Mechanical Engineer</title>
+    <meta name="description" content="Ahmet Faruk Efe - Projects & Engineering Work.">
+    <title>Work | Ahmet Faruk Efe</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
 </head>
 
 <body>
@@ -22,38 +25,37 @@
 
             <nav>
                 <ul class="nav-links">
-                    <li><a href="work.html" data-key="nav_work">My Works</a></li>
+                    <li><a href="work.html" class="active" data-key="nav_work">My Works</a></li>
                     <li><a href="insights.html" data-key="nav_insights">Technical Blogs</a></li>
-                    <li><a href="index.html" class="active" data-key="nav_home">Home</a></li>
+                    <li><a href="index.html" data-key="nav_home">Home</a></li>
                     <li><a href="lifestyle.html" data-key="nav_lifestyle">Lifestyle</a></li>
                     <li><a href="contact.html" data-key="nav_contact">Contact</a></li>
                 </ul>
             </nav>
 
             <div class="lang-switch">
-                <button id="btn-en" class="active">EN</button>
+                <button id="btn-en">EN</button>
                 <span class="divider">/</span>
                 <button id="btn-tr">TR</button>
             </div>
         </div>
     </header>
 
-    <main>
-        <section id="hero" class="hero-section">
-            <div class="container hero-content">
-                <span class="greeting" data-key="hero_greeting">Hello, I'm</span>
-                <h1 class="hero-name">Ahmet Faruk Efe</h1>
-                <h2 class="hero-title" data-key="hero_title">Mechanical Engineer & Visionary</h2>
-                <p class="hero-desc" data-key="hero_desc">
-                    Designing the future through engineering, innovation, and leadership.
-                </p>
+    <main class="page-content">
+        <section id="work" class="section-padding">
+            <div class="container">
+                <div class="section-header hero-header">
+                    <h2 class="section-title" data-key="work_title">Selected Projects</h2>
+                    <p class="section-desc" data-key="work_desc">
+                        My personal knowledge bank, extending from academic research to industrial application methods, and from engineering theories to technical design standards.
+                    </p>
+                </div>
 
 
-            </div>
-            <div class="hero-bg-glow"></div>
 
-            <div class="hero-visual">
-                <img src="assets/images/ahmet_efe_profile.png" alt="Ahmet Faruk Efe" class="hero-image">
+                <div class="project-grid" id="project-grid-container">
+                    <!-- Projeler JS ile buraya yüklenecek -->
+                </div>
             </div>
         </section>
     </main>
@@ -77,6 +79,7 @@
     </footer>
 
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/work.js"></script>
 </body>
 
 </html>

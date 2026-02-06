@@ -4,19 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ahmet Faruk Efe - Projects & Engineering Work.">
-    <title>Work | Ahmet Faruk Efe</title>
+    <meta name="description" content="Ahmet Faruk Efe - Lifestyle & Interests.">
+    <title>Lifestyle | Ahmet Faruk Efe</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="assets/css/style.css">
-
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
 </head>
 
-<body>
+<body class="theme-orange">
 
     <header id="main-header">
         <div class="container nav-container">
@@ -24,10 +23,10 @@
 
             <nav>
                 <ul class="nav-links">
-                    <li><a href="work.html" class="active" data-key="nav_work">My Works</a></li>
+                    <li><a href="work.html" data-key="nav_work">My Works</a></li>
                     <li><a href="insights.html" data-key="nav_insights">Technical Blogs</a></li>
                     <li><a href="index.html" data-key="nav_home">Home</a></li>
-                    <li><a href="lifestyle.html" data-key="nav_lifestyle">Lifestyle</a></li>
+                    <li><a href="lifestyle.html" class="active" data-key="nav_lifestyle">Lifestyle</a></li>
                     <li><a href="contact.html" data-key="nav_contact">Contact</a></li>
                 </ul>
             </nav>
@@ -41,20 +40,15 @@
     </header>
 
     <main class="page-content">
-        <section id="work" class="section-padding">
+        <section id="lifestyle" class="section-padding">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title" data-key="work_title">Selected Projects</h2>
+                    <h2 class="section-title" data-key="lifestyle_title">Lifestyle & Interests</h2>
                     <div class="section-line"></div>
-                    <p class="section-desc" data-key="work_desc" style="max-width: 800px; margin: 1rem auto; text-align: center; color: rgba(240, 242, 245, 0.6); font-size: 1.1rem; line-height: 1.6;">
-                        My personal knowledge bank, extending from academic research to industrial application methods, and from engineering theories to technical design standards.
-                    </p>
                 </div>
 
-
-
-                <div class="project-grid" id="project-grid-container">
-                    <!-- Projeler JS ile buraya yüklenecek -->
+                <div id="lifestyle-content-area">
+                    <!-- Kategoriler ve İçerikler JS ile buraya yüklenecek -->
                 </div>
             </div>
         </section>
@@ -79,7 +73,7 @@
     </footer>
 
     <script src="assets/js/main.js"></script>
-    <script src="assets/js/work.js"></script>
+    <script src="assets/js/lifestyle.js"></script>
 </body>
 
 </html>

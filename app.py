@@ -8,11 +8,12 @@ from datetime import datetime
 from werkzeug.utils import secure_filename
 import shutil
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'dev_key_super_secret'
+app = Flask(__name__, template_folder='.')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev_key_super_secret')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'md', 'markdown'}
 
 db = SQLAlchemy(app)
 
@@ -91,11 +92,25 @@ def regenerate_json_files():
 # ----------------------------------------------------------------------
 # 3. Yardımcı Fonksiyonlar
 # ----------------------------------------------------------------------
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
 def save_file(file, path):
-    filename = secure_filename(file.filename)
-    full_path = os.path.join(path, filename)
-    file.save(full_path)
-    return filename
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        full_path = os.path.join(path, filename)
+        file.save(full_path)
+        return filename
+    return None
+
+def create_unique_slug(model, base_slug):
+    unique_slug = base_slug
+    counter = 1
+    while model.query.filter_by(slug=unique_slug).first():
+        unique_slug = f"{base_slug}-{counter}"
+        counter += 1
+    return unique_slug
 
 def process_markdown_images(md_content, image_mapping):
     if not md_content: return ""
@@ -129,7 +144,7 @@ def admin_dashboard():
     # (Gelecekte yeni kategori/alt kategori eklenirse otomatik buraya gelir)
     existing_categories = [c[0] for c in db.session.query(Post.category).distinct().all()]
     
-    return render_template('admin_dashboard.html', posts=posts, categories=existing_categories, current_filter=cat_filter)
+    return render_template('templates/admin_dashboard.html', posts=posts, categories=existing_categories, current_filter=cat_filter)
 
 @app.route('/admin/new', methods=['GET', 'POST'])
 def new_post():
@@ -147,9 +162,10 @@ def new_post():
             title_en = request.form.get('title_en', '')
             summary_en = request.form.get('summary_en', '')
 
-            # Slug generation (from TR title usually)
+            # Slug generation (Unique)
             year = str(publish_date.year)
-            slug = slugify(title_tr)
+            base_slug = slugify(title_tr)
+            slug = create_unique_slug(Post, base_slug)
             
             # Create Folders
             upload_dir = os.path.join(app.config['UPLOAD_FOLDER'], category, year, slug)
@@ -159,36 +175,28 @@ def new_post():
             # Shared Images (Cover + Content)
             cover_path = None
             if 'cover_image' in request.files:
-                f = request.files['cover_image']
-                if f.filename != '':
-                    fname = save_file(f, upload_dir)
+                fname = save_file(request.files['cover_image'], upload_dir)
+                if fname:
                     cover_path = f"{web_path_prefix}/{fname}"
 
             image_mapping = {}
             if 'content_images' in request.files:
                 for f in request.files.getlist('content_images'):
-                    if f.filename != '':
-                        fname = save_file(f, upload_dir)
+                    fname = save_file(f, upload_dir)
+                    if fname:
                         image_mapping[f.filename] = f"{web_path_prefix}/{fname}"
 
             # Process TR Markdown
             content_tr = ""
-            if 'markdown_file_tr' in request.files:
-                f = request.files['markdown_file_tr']
-                if f.filename != '':
-                    raw = f.read().decode('utf-8')
-                    content_tr = process_markdown_images(raw, image_mapping)
+            if 'markdown_file_tr' in request.files and request.files['markdown_file_tr'].filename != '':
+                raw = request.files['markdown_file_tr'].read().decode('utf-8')
+                content_tr = process_markdown_images(raw, image_mapping)
             
             # Process EN Markdown
             content_en = ""
-            if 'markdown_file_en' in request.files:
-                f = request.files['markdown_file_en']
-                if f.filename != '':
-                    raw = f.read().decode('utf-8')
-                    content_en = process_markdown_images(raw, image_mapping)
-
-            # Check if EN content missing, fallback to TR? Or keep empty? 
-            # User wants separate upload, so we trust their input.
+            if 'markdown_file_en' in request.files and request.files['markdown_file_en'].filename != '':
+                raw = request.files['markdown_file_en'].read().decode('utf-8')
+                content_en = process_markdown_images(raw, image_mapping)
 
             # DB Save
             post = Post(
@@ -207,18 +215,21 @@ def new_post():
 
         except Exception as e:
             flash(f'Hata: {str(e)}', 'danger')
+            app.logger.error(f"Error creating post: {e}")
+    
             print(e)
     
-    return render_template('admin_form.html', action='new')
+    return render_template('templates/admin_form.html', action='new')
 
 @app.route('/admin/edit/<int:id>', methods=['GET', 'POST'])
 def edit_post(id):
     post = Post.query.get_or_404(id)
     
-    # Calculate upload directory (based on *current* post data for listing existing)
-    year = str(post.publish_date.year)
-    upload_dir = os.path.join(app.config['UPLOAD_FOLDER'], post.category, year, post.slug)
-    web_path_prefix = f"/{upload_dir}".replace("\\", "/")
+    # Capture old state for potential folder move
+    old_category = post.category
+    old_year = str(post.publish_date.year)
+    old_slug = post.slug
+    old_upload_dir = os.path.join(app.config['UPLOAD_FOLDER'], old_category, old_year, old_slug)
     
     if request.method == 'POST':
         try:
@@ -232,42 +243,62 @@ def edit_post(id):
             date_str = request.form['publish_date']
             post.publish_date = datetime.strptime(date_str, '%Y-%m-%d').date()
             
-            # Recalculate path in case category/date changed (keeping simple, ensuring dir exists)
+            # Recalculate path
             year = str(post.publish_date.year)
-            upload_dir = os.path.join(app.config['UPLOAD_FOLDER'], post.category, year, post.slug)
-            os.makedirs(upload_dir, exist_ok=True)
-            web_path_prefix = f"/{upload_dir}".replace("\\", "/")
+            new_upload_dir = os.path.join(app.config['UPLOAD_FOLDER'], post.category, year, post.slug)
+            
+            # --- Folder Move Logic ---
+            web_path_prefix = f"/{new_upload_dir}".replace("\\", "/")
+            
+            if old_upload_dir != new_upload_dir:
+                if os.path.exists(old_upload_dir):
+                    # Ensure parent exists
+                    os.makedirs(os.path.dirname(new_upload_dir), exist_ok=True)
+                    shutil.move(old_upload_dir, new_upload_dir)
+                    
+                    # Update paths in database fields
+                    old_web_path = f"/{old_upload_dir}".replace("\\", "/")
+                    new_web_path_prefix = f"/{new_upload_dir}".replace("\\", "/")
+                    
+                    if post.cover_image:
+                        post.cover_image = post.cover_image.replace(old_web_path, new_web_path_prefix)
+                    if post.content_tr:
+                        post.content_tr = post.content_tr.replace(old_web_path, new_web_path_prefix)
+                    if post.content_en:
+                        post.content_en = post.content_en.replace(old_web_path, new_web_path_prefix)
+                else:
+                    # Old dir didn't exist, just create new
+                    os.makedirs(new_upload_dir, exist_ok=True)
+            else:
+                 os.makedirs(new_upload_dir, exist_ok=True)
 
-            # Images Update
+            # --- Images Update ---
             if 'cover_image' in request.files:
-                f = request.files['cover_image']
-                if f.filename != '':
-                    fname = save_file(f, upload_dir)
+                fname = save_file(request.files['cover_image'], new_upload_dir)
+                if fname:
                     post.cover_image = f"{web_path_prefix}/{fname}"
 
             image_mapping = {}
             if 'content_images' in request.files:
                 for f in request.files.getlist('content_images'):
-                    if f.filename != '':
-                        fname = save_file(f, upload_dir)
+                    fname = save_file(f, new_upload_dir)
+                    if fname:
                         image_mapping[f.filename] = f"{web_path_prefix}/{fname}"
 
-            # Markdown Updates
+            # --- Markdown Updates ---
             
-            # TR Content: File priority > Textarea
+            # TR Content
             if 'markdown_file_tr' in request.files and request.files['markdown_file_tr'].filename != '':
-                f = request.files['markdown_file_tr']
-                raw = f.read().decode('utf-8')
+                raw = request.files['markdown_file_tr'].read().decode('utf-8')
                 post.content_tr = process_markdown_images(raw, image_mapping)
             else:
                 raw_content = request.form.get('content_tr')
                 if raw_content:
                     post.content_tr = process_markdown_images(raw_content, image_mapping)
 
-            # EN Content: File priority > Textarea
+            # EN Content
             if 'markdown_file_en' in request.files and request.files['markdown_file_en'].filename != '':
-                f = request.files['markdown_file_en']
-                raw = f.read().decode('utf-8')
+                raw = request.files['markdown_file_en'].read().decode('utf-8')
                 post.content_en = process_markdown_images(raw, image_mapping)
             else:
                 raw_content = request.form.get('content_en')
@@ -282,6 +313,13 @@ def edit_post(id):
             
         except Exception as e:
             flash(f'Hata: {str(e)}', 'danger')
+            app.logger.error(f"Error editing post: {e}")
+            # Do not return here, fall through to render template with error message
+
+    # Recalculate upload_dir/web_path for GET or error case (using current post state)
+    year = str(post.publish_date.year)
+    upload_dir = os.path.join(app.config['UPLOAD_FOLDER'], post.category, year, post.slug)
+    web_path_prefix = f"/{upload_dir}".replace("\\", "/")
 
     # Prepare existing images list for GET request
     existing_images = []
@@ -293,7 +331,9 @@ def edit_post(id):
                     'url': f"{web_path_prefix}/{fname}"
                 })
 
-    return render_template('admin_form.html', action='edit', post=post, existing_images=existing_images)
+
+
+    return render_template('templates/admin_form.html', action='edit', post=post, existing_images=existing_images)
 
 @app.route('/admin/delete/<int:id>')
 def delete_post(id):
@@ -318,9 +358,14 @@ def send_assets(path):
 
 @app.route('/<path:filename>')
 def serve_static_html(filename):
-    # Bu kod, index.html dışındaki diğer html dosyalarını (projects.html vb.)
-    # templates klasöründen çağırmana yarar.
-    return render_template(filename)
+    # Security: Ensure filename is safe and ends with .html
+    if not filename.endswith('.html'):
+         return "Access denied", 403
+    
+    try:
+        return render_template(filename)
+    except Exception:
+        return "Page not found", 404
 
 # ----------------------------------------------------------------------
 # Başlangıç

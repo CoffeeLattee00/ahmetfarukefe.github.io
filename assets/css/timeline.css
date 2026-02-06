@@ -1,0 +1,117 @@
+
+/* ========================
+   EXPERIENCE TIMELINE
+   ======================== */
+.experience-section {
+    padding: 100px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.timeline-container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    padding-left: 30px; /* Space for line on mobile override later */
+}
+
+/* The Background Line (Gray) */
+.timeline-track {
+    position: absolute;
+    left: 20px; /* Adjust based on dot size */
+    top: 20px;
+    bottom: 0;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    transform-origin: top;
+}
+
+/* The Progress Line (Orange/Color) */
+.timeline-progress {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    width: 2px;
+    background: var(--human-touch);
+    height: 0; /* Dynamic via JS */
+    box-shadow: 0 0 10px var(--human-touch);
+    transition: height 0.1s linear; /* Smooth immediate follow */
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 60px;
+    margin-bottom: 60px;
+    opacity: 0.3; /* Start dimmed */
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateY(20px);
+}
+
+.timeline-item.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.timeline-dot {
+    position: absolute;
+    left: 14px; /* Center on 2px line (2px + 14 = 16px center? No. Line is at 20px. Dot needs to center there. */
+    left: 13px; /* Track is at 20px (left). Dot is 16px wide. 20 - (16/2) + 1 (half line width) = 13px approx */
+    top: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--bg-color);
+    border: 3px solid var(--human-touch);
+    z-index: 2;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.timeline-item.active .timeline-dot {
+    background: var(--human-touch);
+    box-shadow: 0 0 15px var(--human-touch);
+    transform: scale(1.2);
+}
+
+.timeline-date {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.timeline-title {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.timeline-desc {
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    max-width: 650px;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .timeline-container {
+        padding-left: 0;
+    }
+    
+    .timeline-track, .timeline-progress {
+        left: 15px;
+    }
+    
+    .timeline-dot {
+        left: 8px;
+    }
+    
+    .timeline-item {
+        padding-left: 45px;
+    }
+    
+    .timeline-title {
+        font-size: 1.5rem;
+    }
+}

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ahmet Faruk Efe - Mechanical Engineer & Visionary.">
+    <title>Ahmet Faruk Efe | Mechanical Engineer</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/timeline.css">
+</head>
+
+<body>
+
+    <header id="main-header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">Ahmet Faruk Efe</a>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="work.html" data-key="nav_work">My Works</a></li>
+                    <li><a href="insights.html" data-key="nav_insights">Technical Blogs</a></li>
+                    <li><a href="index.html" class="active" data-key="nav_home">Home</a></li>
+                    <li><a href="lifestyle.html" data-key="nav_lifestyle">Lifestyle</a></li>
+                    <li><a href="contact.html" data-key="nav_contact">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="lang-switch">
+                <button id="btn-en" class="active">EN</button>
+                <span class="divider">/</span>
+                <button id="btn-tr">TR</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="hero-section">
+            <div class="container hero-content">
+                <span class="greeting" data-key="hero_greeting">Hello, I'm</span>
+                <h1 class="hero-name">Ahmet Faruk Efe</h1>
+                <h2 class="hero-title" data-key="hero_title">Plastic Extrusion Engineer</h2>
+                <!-- Subtitle Removed as requested -->
+            </div>
+            <div class="hero-bg-glow"></div>
+
+            <div class="hero-visual">
+                <img src="assets/images/ahmet_efe_profile.png" alt="Ahmet Faruk Efe" class="hero-image">
+            </div>
+        </section>
+
+        <!-- GOAL SECTION (Dynamic Transition) -->
+        <section id="goal" class="goal-section">
+            <div class="goal-visuals">
+                <!-- Cosmic Background -->
+                <div class="goal-cosmos"></div>
+                
+                <!-- Animated Flow Lines SVG -->
+                <svg class="flow-lines" viewBox="0 0 1440 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#41D9D9;stop-opacity:0" />
+                            <stop offset="50%" style="stop-color:#41D9D9;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#41D9D9;stop-opacity:0" />
+                        </linearGradient>
+                        <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#FF6B00;stop-opacity:0" />
+                            <stop offset="50%" style="stop-color:#FF6B00;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#FF6B00;stop-opacity:0" />
+                        </linearGradient>
+                    </defs>
+                    
+                    <!-- Wave 1 (Blue) -->
+                    <path class="flow-path blue" d="M0,200 C300,100 600,300 900,200 C1200,100 1300,250 1440,200" />
+                    <!-- Wave 2 (Orange) -->
+                    <path class="flow-path orange" d="M0,220 C250,150 550,320 850,220 C1150,120 1350,280 1440,220" />
+                    <!-- Wave 3 (Blue) -->
+                    <path class="flow-path blue-light" d="M0,180 C350,80 650,280 950,180 C1250,80 1380,220 1440,180" />
+                </svg>
+            </div>
+
+            <div class="container goal-content">
+                <div class="goal-content-box">
+                    <h2 class="goal-title" data-key="goal_title">Goal: Plastic Extrusion Expert</h2>
+                    <p class="goal-desc" data-key="goal_desc">
+                        My journey is shaped by a relentless pursuit of mastering polymer processing technologies. 
+                        I am dedicating my career to advancing the field of plastic extrusion through precision engineering and innovative R&D.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPERIENCE SECTION -->
+        <section id="experience" class="experience-section">
+            <div class="container">
+                <div class="section-header hero-header" style="margin-bottom: 3rem; padding-top: 0;">
+                    <h2 class="section-title" data-key="exp_title" style="font-size: 2.5rem;">Experiences</h2>
+                </div>
+
+                <div class="timeline-container">
+                    <!-- Vertical Lines -->
+                    <div class="timeline-track"></div>
+                    <div class="timeline-progress" id="timeline-progress-bar"></div>
+
+                    <!-- Item 1: Erasmus 2 (Feb 2025 - 2026) -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date" data-key="exp_erasmus2_date">Feb 2025 – Feb 2026</div>
+                            <h3 class="timeline-title" data-key="exp_erasmus2_title">Erasmus Exchange Program</h3>
+                            <p class="timeline-desc" data-key="exp_erasmus2_desc">
+                                Returning to Bialystok University of Technology with a focused technical mindset to specialize in plastic extrusion and conduct R&D for my thesis.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Item 2: Mir Ar-Ge (Aug 2024 - Sep 2024) -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date" data-key="exp_mir_date">Aug 2024 - Sep 2024</div>
+                            <h3 class="timeline-title" data-key="exp_mir_title">Intern Student</h3>
+                            <p class="timeline-desc" data-key="exp_mir_desc">
+                                Completed an internship at Mir Ar-Ge, gaining hands-on experience in plastic extrusion technologies and witnessing multidisciplinary R&D synergy.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Item 3: Head of Finance (2023 - 2024) -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date" data-key="exp_finance_date">2023 - 2024</div>
+                            <h3 class="timeline-title" data-key="exp_finance_title">Head of Finance Department</h3>
+                            <p class="timeline-desc" data-key="exp_finance_desc">
+                                Managed financial planning and strategic partnerships at Pamukkale University Innovation and Development Community.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Item 4: Erdem Model (Sep 2023 - Present) -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date" data-key="exp_erdem_date">Sep 2023 - Present</div>
+                            <h3 class="timeline-title" data-key="exp_erdem_title">CAD Modeling & CNC Programmer</h3>
+                            <p class="timeline-desc" data-key="exp_erdem_desc">
+                                Creating 3D casting mold designs and optimizing G-codes for CNC production at Erdem Model.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Item 5: Kerem Mold (Jul 2023 - Sep 2023) -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date" data-key="exp_kerem_date">Jul 2023 - Sep 2023</div>
+                            <h3 class="timeline-title" data-key="exp_kerem_title">Intern Student</h3>
+                            <p class="timeline-desc" data-key="exp_kerem_desc">
+                                Internship at KEREM MOLD & AUTOMATION focused on injection mold manufacturing, assembly, maintenance, and quality control.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Item 6: AIESEC (Jun 2023 - Dec 2023) -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date" data-key="exp_aiesec_date">Jun 2023 - Dec 2023</div>
+                            <h3 class="timeline-title" data-key="exp_aiesec_title">Member of AIESEC</h3>
+                            <p class="timeline-desc" data-key="exp_aiesec_desc">
+                                Active member contributing to meetings and global networking to improve soft skills and foreign language proficiency.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Item 7: Debate Club (Nov 2022 - Feb 2024) -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date" data-key="exp_debate_date">Nov 2022 - Feb 2024</div>
+                            <h3 class="timeline-title" data-key="exp_debate_title">Project Team Lead</h3>
+                            <p class="timeline-desc" data-key="exp_debate_desc">
+                                Led the project team at PAU Debate Community, organizing events and conducting workshops on research strategies.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-info">
+                <a href="index.html" class="footer-logo">Ahmet Faruk Efe</a>
+                <p class="footer-text" data-key="footer_text">Engineering the future with passion and precision.</p>
+            </div>
+
+            <div class="footer-links">
+                <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+                <a href="https://github.com" target="_blank">GitHub</a>
+                <a href="mailto:iletisim@ahmetefe.com">Email</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Ahmet Faruk Efe. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>
