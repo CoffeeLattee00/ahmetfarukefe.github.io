@@ -413,56 +413,67 @@ a {
 }
 
 .project-card {
-    display: flex; /* Horizontal Layout like Blog */
-    background: rgba(10, 66, 115, 0.2);
-    border-radius: 12px;
-    border: 1px solid rgba(65, 217, 217, 0.1);
+    display: flex;
+    background: #0B1226; /* Dark Navy Card Base */
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Subtle border */
     overflow: hidden;
-    transition: 0.3s;
-    height: 280px; /* Fixed height for consistency */
+    transition: all 0.4s ease;
+    height: 350px; /* Taller */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
 .project-card:hover {
-    background: rgba(10, 66, 115, 0.4);
+    transform: translateY(-8px);
     border-color: var(--accent-color);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(65, 217, 217, 0.15); /* Glow effect */
 }
 
 .card-image {
-    flex: 0 0 320px; /* Fixed width image on left */
+    flex: 0 0 55%; /* ~55% Width */
     background-size: cover;
     background-position: center;
     position: relative;
-    height: 100%; /* Full height */
-    width: auto; /* Reset width override */
+    height: 100%;
+    /* The Diagonal Cut */
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+    transition: transform 0.5s ease;
 }
 
-/* Diagonal Cut Effect for Image (Same as Blog) */
+.project-card:hover .card-image {
+    transform: scale(1.03); /* Subtle zoom */
+}
+
+/* Remove old gradient overlay */
 .card-image::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 60px;
-    background: linear-gradient(to right, transparent, rgba(10, 66, 115, 0.2));
+    display: none;
 }
 
 .card-content {
     flex: 1;
-    padding: 30px;
+    padding: 40px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: relative;
+    z-index: 2; /* In case of overlap */
+}
+
+.project-date {
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .card-title {
-    font-size: 1.6rem;
-    margin-bottom: 15px;
-    color: var(--text-primary);
-    line-height: 1.3;
+    font-size: 2.2rem;
     font-weight: 700;
+    color: #fff;
+    margin-bottom: 20px;
+    line-height: 1.2;
 }
 
 .card-desc {
@@ -676,67 +687,66 @@ model-viewer {
     display: flex;
     flex-direction: column;
     gap: 40px;
-    max-width: 900px; /* Constrain width for readability */
+    max-width: 1000px; /* Wider to accommodate new layout */
     margin: 0 auto;
 }
 
 .blog-card {
-    display: flex; /* Horizontal Layout */
-    background: rgba(10, 66, 115, 0.2);
-    border-radius: 12px;
-    border: 1px solid rgba(65, 217, 217, 0.1);
+    display: flex;
+    background: #0B1226;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
     overflow: hidden;
-    transition: 0.3s;
-    height: 280px; /* Fixed height for consistency */
+    transition: all 0.4s ease;
+    height: 350px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
 .blog-card:hover {
-    background: rgba(10, 66, 115, 0.4);
+    transform: translateY(-8px);
     border-color: var(--accent-color);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(65, 217, 217, 0.15);
 }
 
 .blog-image-container {
-    flex: 0 0 320px; /* Fixed width image on left */
+    flex: 0 0 55%;
     background-size: cover;
     background-position: center;
     position: relative;
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+    transition: transform 0.5s ease;
 }
 
-/* Diagonal Cut Effect for Image */
+.blog-card:hover .blog-image-container {
+    transform: scale(1.03);
+}
+
 .blog-image-container::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 60px;
-    background: linear-gradient(to right, transparent, rgba(10, 66, 115, 0.2)); /* Smooth blend */
+    display: none;
 }
 
 .blog-content {
     flex: 1;
-    padding: 30px;
+    padding: 40px;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
 .blog-date {
-    font-size: 0.85rem;
-    color: var(--human-touch);
-    margin-bottom: 15px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    margin-bottom: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
     text-transform: uppercase;
 }
 
 .blog-title {
-    font-size: 1.6rem;
-    margin-bottom: 15px;
-    color: var(--text-primary);
-    line-height: 1.3;
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    color: #fff;
+    line-height: 1.2;
     font-weight: 700;
 }
 
